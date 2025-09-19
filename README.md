@@ -24,13 +24,11 @@ A: H_A x W_A<br>
 B: H_B x W_B<br>
 La dimensione della matrice C è data da:<br>
 C (shape)=H_A+ H_B-1,W_A+ W_B-1 <br>
-
 Calcolare la Cross-correlation 2D per immagini SAR ad alta risoluzione sarebbe molto lento, perché, ad esempio, avendo immagini in Tiles da 10000 x 10000 pixels la dimensione di C sarebbe:<br>
 C=10000∙2-1,10000∙2-1=19999,19999<br>
 Quindi dovrei testare 19999 ∙19999=4 ∙〖10〗^8 spostamenti, ciascuno dei quali richiederebbe 10000∙10000 moltiplicazioni e una somma. In totale 4 ∙10^8∙10^8= 4 ∙10^16 moltiplicazioni. Questo non è possibile, quindi si ricorre alla trasformata di Fourier.<br>
 Convolve (A,B)=IFFT(FFT(A)∙(FFT(B))<br>
 Dove FFT converte nello spazio delle frequenze entrambe le immagini. Nello spazio delle frequenze la convoluzione si riduce ad una moltiplicazione punto-punto. Infatti, convolvere due segnali nello spazio reale vuol dire moltiplicare i loro spettri in frequenza. IFFT riconverte il risultato nello spazio reale.<br>
-
 
 4. Valuto la bontà degli shift. Gli shift orizzontali vanno da circa 6 a 11 (con asc solitamente negativo), mentre quelli verticali sono 0 o 1.  Shift estremamente grandi andrebbero esclusi<br>
 
