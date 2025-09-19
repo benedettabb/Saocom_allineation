@@ -27,10 +27,11 @@ Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convol
 <p align="center">
   <img src="https://github.com/benedettabb/Saocom_allineation/blob/cddd2118d834ae039a3328fb2a9f1b540fddcebd/C.png" alt="Descrizione" width="400">
 </p>
+
 Il punto più chiaro è quello in cui C è maggiore; non è esattamente al centro ma ha un certo shift, che è appunto quello che mi serve per traslare l’immagine.
 Se le immagini hanno righe ($H$) e colonne ($W$) :
 ```math
-A: H_A x W_A<br>
+A: H_A x W_A; 
 B: H_B x W_B
 ```
 La dimensione della matrice C è data da:
