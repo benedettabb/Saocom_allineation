@@ -1,17 +1,17 @@
-Correzione della georeferenziazione in immagini Saocom utilizzando Sentinel-1
-Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in 
-	<pSV_m> → posizione del satellite (m)
-	<vSV_mOs> → velocità del satellite (m/s)
-Queste sono probabilmente effemeridi broadcast, infatti la tipologia di georeferenziazione è OLF (On-line Fast) – a differenza comunque di ONVF (Very). Le informazioni sulle orbite precise non sono nel sito e andrebbero chieste a CONAE. Sarebbe meglio chiedere direttamente le immagini correttamente goeriferite. 
-Come work-around si possono coregistrare le immagini l’una con l’altra. Con SNAP la Dem Assisted Coregistration non funziona, invece il tool Coregistration lavora bene ma con immagini della stessa orbita. Invece, lo shift di georeferenziazione è soprattutto evidente tra immagini di orbita diversa.
-È stata quindi sviluppata una procedura in python:
-	Preparazione: immagini Saocom in Equi7 tiles e creazione immagine media Sentinel-1 per l’Austria a partire da dati GRDH (sarebbe meglio con gamma) 
-
+Correzione della georeferenziazione in immagini Saocom utilizzando Sentinel-1<br>
+Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in <br>
+	<pSV_m> → posizione del satellite (m)<br>
+	<vSV_mOs> → velocità del satellite (m/s)<br>
+Queste sono probabilmente effemeridi broadcast, infatti la tipologia di georeferenziazione è OLF (On-line Fast) – a differenza comunque di ONVF (Very). Le informazioni sulle orbite precise non sono nel sito.
+Come work-around si possono coregistrare le immagini l’una con l’altra. Con SNAP la Dem Assisted Coregistration non funziona, invece il tool Coregistration lavora bene ma con immagini della stessa orbita. Invece, lo shift di georeferenziazione è soprattutto evidente tra immagini di orbita diversa.<br>
+È stata quindi sviluppata una procedura in python:<br>
+1. Preparazione: immagini Saocom in Equi7 tiles e creazione immagine media Sentinel-1 per l’Austria a partire da dati GRDH (sarebbe meglio con gamma).
 Quest’ultima è generata preprocessando tutte e 13 le immagini Sentinel-1 (8 asc e 5 des):
 	Orbit file – Thermal Noise – Removal – Border Noise Removal – Calibration – Terrain Correction - dB
 Quindi ho creato un mosaico asc e un mosaico des per tutta Austria e diviso in tiles Equi7 grid.
 
-	I nodata nell’immagine Saocom e Sentinel-1 diventano 0 e i valori sono normalizzati sottraendoli alla media.
+  
+2.  I nodata nell’immagine Saocom e Sentinel-1 diventano 0 e i valori sono normalizzati sottraendoli alla media.
 Il problema è che quando ci sono tanti no data il valore di C finale cambia. Forse non conta la quantità di nodata ma il fatto che siano molto sparsi nell’immagine – quindi questo passaggio dovrebbe essere fatto prima del mascheramento? Anche prima della divisione in tiles perché in alcune immagini in montagna non ci sono punti di riferimento. Sarebbe meglio sfruttare l’intera immagine? Cerco di verificare quante immagini vengono correttamente shiftati e quali no.
 
 	Calcolo lo shift per ogni immagine tramite cross-correlation 2D
