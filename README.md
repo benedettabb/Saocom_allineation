@@ -25,7 +25,7 @@ C(y,x)= \sum_{(i,j)}[A(i,j)∙B(i+y,j+x)]
 Dove $y$ è lo shift verticale, $x$ è lo shift orizzontale,  $A$  è il valore di backscatter dei pixel nell’immagine di riferimento (Sentinel-1) e $B$ per l’immagine da shiftare (SAOCOM).<br>
 Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è $C$, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi $C$ è piccolo. Quindi ottengo tanti valori di $C(y,x)$ per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe.<br>
 <p align="center">
-  <img src="https://github.com/tuo_utente/tuo_repo/percorso/immagine.png" alt="Descrizione" width="400">
+  <img src="https://github.com/benedettabb/Saocom_allineation/blob/cddd2118d834ae039a3328fb2a9f1b540fddcebd/C.png" alt="Descrizione" width="400">
 </p>
 Il punto più chiaro è quello in cui C è maggiore; non è esattamente al centro ma ha un certo shift, che è appunto quello che mi serve per traslare l’immagine.
 Se le immagini hanno righe ($H$) e colonne ($W$) :
