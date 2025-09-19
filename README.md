@@ -4,6 +4,8 @@
 Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in <br>
 - <pSV_m> → posizione del satellite (m)<br>
 - <vSV_mOs> → velocità del satellite (m/s)<br>
+
+
 Queste sono probabilmente effemeridi broadcast, infatti la tipologia di georeferenziazione è OLF (On-line Fast) – a differenza comunque di ONVF (Very). Le informazioni sulle orbite precise non sono nel sito.
 Come work-around si possono coregistrare le immagini l’una con l’altra. Con SNAP la Dem Assisted Coregistration non funziona, invece il tool Coregistration lavora bene ma con immagini della stessa orbita. Invece, lo shift di georeferenziazione è soprattutto evidente tra immagini di orbita diversa.<br>
 
