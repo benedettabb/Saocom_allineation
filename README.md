@@ -2,8 +2,8 @@
 
 
 Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in <br>
-	<pSV_m> → posizione del satellite (m)<br>
-	<vSV_mOs> → velocità del satellite (m/s)<br>
+- <pSV_m> → posizione del satellite (m)<br>
+- <vSV_mOs> → velocità del satellite (m/s)<br>
 Queste sono probabilmente effemeridi broadcast, infatti la tipologia di georeferenziazione è OLF (On-line Fast) – a differenza comunque di ONVF (Very). Le informazioni sulle orbite precise non sono nel sito.
 Come work-around si possono coregistrare le immagini l’una con l’altra. Con SNAP la Dem Assisted Coregistration non funziona, invece il tool Coregistration lavora bene ma con immagini della stessa orbita. Invece, lo shift di georeferenziazione è soprattutto evidente tra immagini di orbita diversa.<br>
 
@@ -21,7 +21,7 @@ Il problema è che quando ci sono tanti no data il valore di C finale cambia. Fo
 4. Calcolo lo shift per ogni immagine tramite **cross-correlation 2D**<br>
 $C(y,x)= \sum_{(i,j)}[A(i,j)∙B(i+y,j+x)]$<br>
 Dove y è lo shift verticale, x è lo shift orizzontale,  A  è il valore di backscatter dei pixel nell’immagine di riferimento (Sentinel-1) e B per l’immagine da shiftare (SAOCOM).<br>
-Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è C, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi C è piccolo. Quindi ottengo tanti valori di C(y,x) per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe.
+Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è C, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi C è piccolo. Quindi ottengo tanti valori di C(y,x) per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe.<br>
 ![Testo alternativo](C.png)<br>
 Il punto più chiaro è quello in cui C è maggiore; non è esattamente al centro ma ha un certo shift, che è appunto quello che mi serve per traslare l’immagine.
 Se le immagini hanno righe (H) e colonne (W) :<br>
