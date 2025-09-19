@@ -21,7 +21,7 @@ Il problema è che quando ci sono tanti no data il valore di C finale cambia. Fo
 4. Calcolo lo shift per ogni immagine tramite **cross-correlation 2D**<br>
 $$
 C(y,x)= \sum_{(i,j)}[A(i,j)∙B(i+y,j+x)]
-   
+$$
 Dove $y$ è lo shift verticale, $x$ è lo shift orizzontale,  $A$  è il valore di backscatter dei pixel nell’immagine di riferimento (Sentinel-1) e $B$ per l’immagine da shiftare (SAOCOM).<br>
 Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è $C$, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi $C$ è piccolo. Quindi ottengo tanti valori di $C(y,x)$ per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe.<br>
 ![Testo alternativo](C.png)<br>
@@ -29,8 +29,7 @@ Il punto più chiaro è quello in cui C è maggiore; non è esattamente al centr
 Se le immagini hanno righe ($H$) e colonne ($W$) :<br>
 $$
 A: H_A x W_A
-$$
-$$
+<br>
 B: H_B x W_B
 $$
 La dimensione della matrice C è data da:<br>
