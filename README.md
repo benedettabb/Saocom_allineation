@@ -1,4 +1,4 @@
-# Correzione della georeferenziazione in immagini Saocom utilizzando Sentinel-1<br>
+# Coregistrazione immagini Saocom utilizzando Sentinel-1 come master<br>
 
 
 Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in <br>
