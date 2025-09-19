@@ -1,4 +1,4 @@
-#Correzione della georeferenziazione in immagini Saocom utilizzando Sentinel-1<br>
+# Correzione della georeferenziazione in immagini Saocom utilizzando Sentinel-1<br>
 
 
 Nelle immagini SAOCOM XML le informazioni dell’orbita sono contenute in <br>
@@ -9,16 +9,16 @@ Come work-around si possono coregistrare le immagini l’una con l’altra. Con 
 
 
 È stata quindi sviluppata una procedura in python:<br>
-1. ###Preparazione: imagini Saocom in Equi7 tiles e creazione immagine media Sentinel-1 per l’Austria a partire da dati GRDH (sarebbe meglio con gamma).
+1. **Preparazione**: imagini Saocom in Equi7 tiles e creazione immagine media Sentinel-1 per l’Austria a partire da dati GRDH (sarebbe meglio con gamma).
 Quest’ultima è generata preprocessando tutte e 13 le immagini Sentinel-1 (8 asc e 5 des):
 	Orbit file – Thermal Noise – Removal – Border Noise Removal – Calibration – Terrain Correction - dB
 Quindi ho creato un mosaico asc e un mosaico des per tutta Austria e diviso in tiles Equi7 grid.
 
   
-3.  I nodata nell’immagine Saocom e Sentinel-1 diventano 0 e i valori sono normalizzati sottraendoli alla media.
+3.  I **nodata** nell’immagine Saocom e Sentinel-1 diventano 0 e i valori sono normalizzati sottraendoli alla media.
 Il problema è che quando ci sono tanti no data il valore di C finale cambia. Forse non conta la quantità di nodata ma il fatto che siano molto sparsi nell’immagine – quindi questo passaggio dovrebbe essere fatto prima del mascheramento? Anche prima della divisione in tiles perché in alcune immagini in montagna non ci sono punti di riferimento. Sarebbe meglio sfruttare l’intera immagine? Cerco di verificare quante immagini vengono correttamente shiftati e quali no.
 
-4. Calcolo lo shift per ogni immagine tramite cross-correlation 2D<br>
+4. Calcolo lo shift per ogni immagine tramite **cross-correlation 2D**<br>
 $C(y,x)= \sum_{(i,j)}[A(i,j)∙B(i+y,j+x)]$<br>
 Dove y è lo shift verticale, x è lo shift orizzontale,  A  è il valore di backscatter dei pixel nell’immagine di riferimento (Sentinel-1) e B per l’immagine da shiftare (SAOCOM).<br>
 Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è C, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi C è piccolo. Quindi ottengo tanti valori di C(y,x) per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe. 
@@ -32,11 +32,11 @@ Calcolare la Cross-correlation 2D per immagini SAR ad alta risoluzione sarebbe m
 $Convolve (A,B)=IFFT(FFT(A)∙(FFT(B))$<br>
 Dove FFT converte nello spazio delle frequenze entrambe le immagini. Nello spazio delle frequenze la convoluzione si riduce ad una moltiplicazione punto-punto. Infatti, convolvere due segnali nello spazio reale vuol dire moltiplicare i loro spettri in frequenza. IFFT riconverte il risultato nello spazio reale.<br>
 
-5. Valuto la bontà degli shift. Gli shift orizzontali vanno da circa 6 a 11 (con asc solitamente negativo), mentre quelli verticali sono 0 o 1.  Shift estremamente grandi andrebbero esclusi<br>
+5. Valuto la **bontà degli shift**. Gli shift orizzontali vanno da circa 6 a 11 (con asc solitamente negativo), mentre quelli verticali sono 0 o 1.  Shift estremamente grandi andrebbero esclusi<br>
 
 
-6. Applico lo shift a ciascuna immagine a tutte le bande<br>
+6. **Applico lo shift** a ciascuna immagine a tutte le bande<br>
 
 
-7. Salvo il file di log con nome del file, correlazione di Pearson prima e dopo, shift<br>
+7. Salvo il **file di log** con nome del file, correlazione di Pearson prima e dopo, shift<br>
 
