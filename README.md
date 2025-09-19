@@ -18,7 +18,6 @@ Il problema è che quando ci sono tanti no data il valore di C finale cambia. Fo
 C(y,x)= ∑_(i,j)〖A(i,j)∙B(i+y,j+x)〗<br>
 Dove y è lo shift verticale, x è lo shift orizzontale,  A  è il valore di backscatter dei pixel nell’immagine di riferimento (Sentinel-1) e B per l’immagine da shiftare (SAOCOM).<br>
 Per ogni spostamento calcolo il prodotto in ciascun pixel e poi lo sommo (convoluzione): questo è C, che è massimo quando i pattern coincidono. Se invece i pattern sono diversi C è piccolo. Quindi ottengo tanti valori di C(y,x) per ciascun spostamento e devo selezionare il massimo. Questi valori sono organizzati in una matrice in cui al centro ho spostamento 0, shift orizzontale nelle colonne e shift verticale nelle righe. 
- 
 Il punto più chiaro è quello in cui C è maggiore; non è esattamente al centro ma ha un certo shift, che è appunto quello che mi serve per traslare l’immagine.
 Se le immagini hanno righe (H) e colonne (W) :<br>
 A: H_A x W_A<br>
@@ -31,8 +30,9 @@ C=10000∙2-1,10000∙2-1=19999,19999<br>
 Quindi dovrei testare 19999 ∙19999=4 ∙〖10〗^8 spostamenti, ciascuno dei quali richiederebbe 10000∙10000 moltiplicazioni e una somma. In totale 4 ∙10^8∙10^8= 4 ∙10^16 moltiplicazioni. Questo non è possibile, quindi si ricorre alla trasformata di Fourier.<br>
 Convolve (A,B)=IFFT(FFT(A)∙(FFT(B))<br>
 Dove FFT converte nello spazio delle frequenze entrambe le immagini. Nello spazio delle frequenze la convoluzione si riduce ad una moltiplicazione punto-punto. Infatti, convolvere due segnali nello spazio reale vuol dire moltiplicare i loro spettri in frequenza. IFFT riconverte il risultato nello spazio reale.<br>
-4. Valuto la bontà degli shift.
-Gli shift orizzontali vanno da circa 6 a 11 (con asc solitamente negativo), mentre quelli verticali sono 0 o 1.  Shift estremamente grandi andrebbero esclusi<br>
+
+
+4. Valuto la bontà degli shift. Gli shift orizzontali vanno da circa 6 a 11 (con asc solitamente negativo), mentre quelli verticali sono 0 o 1.  Shift estremamente grandi andrebbero esclusi<br>
 
 
 5. Applico lo shift a ciascuna immagine a tutte le bande<br>
